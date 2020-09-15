@@ -75,13 +75,6 @@ class _MyDrawerState extends State<MyDrawer> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ListTile(
-                title: Text(''),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/profile_screen');
-                },
-              ),
-              ListTile(
                 title: Row(
                   children: [
                     Icon(
@@ -101,6 +94,10 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   ],
                 ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/profile_screen');
+                },
               ),
               SizedBox(
                 height: height * 0.6,

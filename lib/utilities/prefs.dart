@@ -41,7 +41,7 @@ setParentID(int id) async {
 
 getParentID() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  int parentID = preferences.getInt('parent_id') ?? -1;
+  int parentID = preferences.getInt('parent_id');
   return parentID;
 }
 
@@ -52,6 +52,50 @@ setStatus(bool status) async {
 
 getStatus() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  int parentID = preferences.getInt('status') ?? false;
-  return parentID;
+  bool status = preferences.getBool('status') ?? false;
+  return status;
+}
+
+setPhoneNumber(int number) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setInt('number', number);
+}
+
+getPhoneNumber() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  int phone = preferences.getInt('number');
+  return phone;
+}
+
+setAddress(String address) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('address', address);
+}
+
+getAddress() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String address = preferences.getString('address');
+  return address;
+}
+
+setPassword(String password) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('password', password);
+}
+
+getPassword() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String password = preferences.getString('password');
+  return password;
+}
+
+setChildren(children) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('children', children);
+}
+
+getChildren() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String children = preferences.getString('children');
+  return children;
 }

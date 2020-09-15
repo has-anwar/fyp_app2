@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:app2/utilities/constants.dart';
 
 class ReusableTextField extends StatefulWidget {
-  ReusableTextField(
-      {@required this.hint,
-      @required this.icon,
-      @required this.obscureText,
-      @required this.myController});
+  ReusableTextField({
+    @required this.hint,
+    @required this.icon,
+    @required this.obscureText,
+    @required this.myController,
+  });
 
   final String hint;
   final Icon icon;
@@ -29,8 +30,9 @@ class _ReusableTextFieldState extends State<ReusableTextField> {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Theme(
-        child: TextField(
+        child: TextFormField(
           controller: widget.myController,
+          cursorColor: kOrangeColor,
           decoration: InputDecoration(
             prefixIcon: widget.icon,
             border: InputBorder.none,
