@@ -5,6 +5,7 @@ import 'screens/login.dart';
 import 'screens/profile_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/update_profile.dart';
+import 'screens/child_screen.dart';
 
 void main() => runApp(BMICalculator());
 
@@ -21,6 +22,7 @@ class BMICalculator extends StatelessWidget {
         '/profile_screen': (context) => ProfileScreen(),
         '/update_profile': (context) => UpdateProfile(),
         '/change_password': (context) => UpdatePassword(),
+        '/child_screen': (context) => ChildScreen(),
       },
     );
   }
