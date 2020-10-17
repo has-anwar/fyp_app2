@@ -7,26 +7,41 @@ import 'screens/home_screen.dart';
 import 'screens/update_profile.dart';
 import 'screens/child_screen.dart';
 import 'check_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(BMICalculator());
-
-class BMICalculator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // home: LoginScreen(),
-      // home: MainScreen(),
-      // initialRoute: '/',
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  var id = preferences.getInt('parent_id');
+  runApp(
+    MaterialApp(
+      home: id == null ? LoginScreen() : MainScreen(),
       routes: {
-        '/': (context) => checkLogin(),
         '/login': (context) => LoginScreen(),
-        // '/': (context) => LoginScreen(),
         '/main': (context) => MainScreen(),
         '/profile_screen': (context) => ProfileScreen(),
         '/update_profile': (context) => UpdateProfile(),
         '/change_password': (context) => UpdatePassword(),
         '/child_screen': (context) => ChildScreen(),
       },
-    );
-  }
+    ),
+  );
 }
+
+// class BMICalculator extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       routes: {
+//         '/': (context) => checkLogin(),
+//         '/login': (context) => LoginScreen(),
+//         // '/': (context) => LoginScreen(),
+//         '/main': (context) => MainScreen(),
+//         '/profile_screen': (context) => ProfileScreen(),
+//         '/update_profile': (context) => UpdateProfile(),
+//         '/change_password': (context) => UpdatePassword(),
+//         '/child_screen': (context) => ChildScreen(),
+//       },
+//     );
+//   }
+// }
