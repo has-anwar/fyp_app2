@@ -47,7 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
     var userInfo = jsonDecode(response.body);
-
     if (userInfo['flag'] == true) {
       setStatus(true);
       int parentID = userInfo['id'];
@@ -55,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String cnic = userInfo['cnic'];
       String email = userInfo['email'];
       String address = userInfo['address'];
-      int phone = userInfo['number'];
+      String phone = userInfo['number'];
 
       setParentID(parentID);
       setName(name);

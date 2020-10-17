@@ -1,9 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ChildData {
-  final String name;
-  final int age;
-  final int id;
+  String name;
+  int childId;
+  int age;
+  int parentId;
+  String fatherName;
+  String motherName;
 
-  ChildData({@required this.name, @required this.age, @required this.id});
+  ChildData({
+    @required this.name,
+    @required this.childId,
+    @required this.age,
+    @required this.parentId,
+    @required this.fatherName,
+    @required this.motherName,
+  });
 }

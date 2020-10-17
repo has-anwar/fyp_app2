@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app2/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app2/utilities/constants.dart';
 import 'package:app2/utilities/reusable_profile_text_field.dart';
@@ -9,18 +10,56 @@ import 'package:app2/resources/profile_labels.dart';
 import 'package:app2/utilities/prefs.dart';
 import 'package:http/http.dart' as http;
 
-class UpdatePassword extends StatelessWidget {
+class UpdatePassword extends StatefulWidget {
+  @override
+  _UpdatePasswordState createState() => _UpdatePasswordState();
+}
+
+class _UpdatePasswordState extends State<UpdatePassword> {
   TextEditingController currentPasswordController = TextEditingController();
+
   TextEditingController newPasswordController = TextEditingController();
+
   TextEditingController confirmPasswordController = TextEditingController();
 
   bool currentFlag = true;
   bool newFlag = true;
   bool confirmFlag = true;
+  bool lengthFlag = true;
+
+  IconData iconData;
 
   getUsername() async {
     String username = await getEmail();
     return username;
+  }
+
+  final Color errorColor = Colors.red[900];
+
+  Color backgroundColor = kBackgroundColor;
+
+  void displayError() {
+    iconData = Icons.cancel;
+    backgroundColor = errorColor;
+  }
+
+  String errorMessage = 'Error Message';
+  void displayUpdated() {
+    iconData = Icons.check_circle;
+    backgroundColor = Colors.green[900];
+  }
+
+  void updatedSuccessfully() {
+    errorMessage = 'Password updated successfully';
+    displayUpdated();
+  }
+
+  void wrongCurrentPassword() {
+    errorMessage = 'Incorrect Current Password';
+  }
+
+  void incorrectNewAndConfirmPasswords() {
+    errorMessage = 'New and Confirm passwords do not match';
   }
 
   void getFlags() {
@@ -32,6 +71,10 @@ class UpdatePassword extends StatelessWidget {
     }
     if (confirmPasswordController.text.isEmpty) {
       confirmFlag = false;
+    }
+    if (newPasswordController.text.length <= 7 ||
+        confirmPasswordController.text.length <= 7) {
+      lengthFlag = false;
     }
   }
 
@@ -61,30 +104,72 @@ class UpdatePassword extends StatelessWidget {
         print(response);
         var userInfo = jsonDecode(response.body);
         if (userInfo['flag'] == true) {
-          print(userInfo);
-          print('UPdated');
+          setState(() {
+            updatedSuccessfully();
+          });
         } else {
           print(userInfo);
-          print('Wrong password');
+
+          setState(() {
+            wrongCurrentPassword();
+            displayError();
+          });
         }
       } else {
         print('ERROR: WRONG NEW AND CONFIRM PASSWORD');
-        //TODO: ERROR MESSAGE WRONG NEW AND CONFIRM PASSWORD
+        setState(() {
+          incorrectNewAndConfirmPasswords();
+          displayError();
+        });
       }
     } else {
       if (!currentFlag) {
-        //TODO: EMPTY FIELDS
-
-        print(currentFlag);
-        print('Current Empty');
+        setState(() {
+          isEmpty();
+          displayError();
+        });
       }
       if (!newFlag) {
-        print('New Empty');
+        setState(() {
+          isEmpty();
+          displayError();
+        });
       }
       if (!confirmFlag) {
-        print('Confirm Empty');
+        setState(() {
+          isEmpty();
+          displayError();
+        });
       }
+      setState(() {
+        currentFlag = true;
+        newFlag = true;
+        confirmFlag = true;
+      });
+      // if (!lengthFlag) {
+      //   setState(() {
+      //     passwordLength();
+      //     displayError();
+      //   });
+      // }
     }
+    currentPasswordController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
+  }
+
+  // void passwordLength() {
+  //   errorMessage = 'New password cannot be less than eight characters';
+  // }
+
+  void resetErrors() {
+    setState(() {
+      backgroundColor = kBackgroundColor;
+    });
+  }
+
+  void isEmpty() {
+    errorMessage = 'Password fields cannot be left empty';
   }
 
   @override
@@ -99,64 +184,86 @@ class UpdatePassword extends StatelessWidget {
         iconTheme: IconThemeData(color: kOrangeColor),
       ),
       drawer: MyDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height * 0.1,
+      body: GestureDetector(
+        onTap: () {
+          resetErrors();
+        },
+        child: Container(
+          height: height * 0.95,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: height * 0.1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      iconData,
+                      color: backgroundColor,
+                    ),
+                    SizedBox(width: width * 0.04),
+                    Text(
+                      errorMessage,
+                      style: TextStyle(color: backgroundColor, fontSize: 20.0),
+                    ),
+                  ],
+                ),
+                ProfileLabelText(label: 'Current Password'),
+                ReusableTextField(
+                  hint: 'Enter current password',
+                  myController: currentPasswordController,
+                  obscureText: true,
+                  icon: Icon(
+                    Icons.vpn_key,
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.05,
+                ),
+                ProfileLabelText(label: 'Enter new Password'),
+                ReusableTextField(
+                  hint: 'Enter new password',
+                  myController: newPasswordController,
+                  obscureText: true,
+                  icon: Icon(
+                    Icons.vpn_key,
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.05,
+                ),
+                ProfileLabelText(label: 'Confirm new Password'),
+                ReusableTextField(
+                  hint: 'Confirm new password',
+                  myController: confirmPasswordController,
+                  obscureText: true,
+                  icon: Icon(
+                    Icons.vpn_key,
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.1,
+                ),
+                ButtonTheme(
+                  minWidth: 200.0,
+                  height: 60.0,
+                  child: RaisedButton(
+                    padding: EdgeInsets.all(8.0),
+                    color: Colors.red[900],
+                    textColor: Colors.white,
+                    child: Text('Update Password'),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0)),
+                    onPressed: () {
+                      updatePassword();
+                    },
+                  ),
+                )
+              ],
             ),
-            ProfileLabelText(label: 'Current Password'),
-            ReusableTextField(
-              hint: 'Enter current password',
-              myController: currentPasswordController,
-              obscureText: true,
-              icon: Icon(
-                Icons.vpn_key,
-              ),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            ProfileLabelText(label: 'Enter new Password'),
-            ReusableTextField(
-              hint: 'Enter new password',
-              myController: newPasswordController,
-              obscureText: true,
-              icon: Icon(
-                Icons.vpn_key,
-              ),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            ProfileLabelText(label: 'Confirm new Password'),
-            ReusableTextField(
-              hint: 'Confirm new password',
-              myController: confirmPasswordController,
-              obscureText: true,
-              icon: Icon(
-                Icons.vpn_key,
-              ),
-            ),
-            SizedBox(
-              height: height * 0.1,
-            ),
-            ButtonTheme(
-              minWidth: 200.0,
-              height: 60.0,
-              child: RaisedButton(
-                padding: EdgeInsets.all(8.0),
-                color: Colors.red[900],
-                textColor: Colors.white,
-                child: Text('Update Password'),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0)),
-                onPressed: () {
-                  updatePassword();
-                },
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );

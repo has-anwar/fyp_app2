@@ -136,7 +136,7 @@ class _MyDrawerState extends State<MyDrawer> {
                         FlatButton(
                             onPressed: () {
                               logOff();
-                              Navigator.popAndPushNamed(context, '/');
+                              Navigator.popAndPushNamed(context, '/login');
                             },
                             child: Text(
                               'Yes',

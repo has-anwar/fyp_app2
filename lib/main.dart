@@ -6,6 +6,7 @@ import 'screens/profile_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/update_profile.dart';
 import 'screens/child_screen.dart';
+import 'check_login.dart';
 
 void main() => runApp(BMICalculator());
 
@@ -15,9 +16,11 @@ class BMICalculator extends StatelessWidget {
     return MaterialApp(
       // home: LoginScreen(),
       // home: MainScreen(),
-      initialRoute: '/',
+      // initialRoute: '/',
       routes: {
-        '/': (context) => LoginScreen(),
+        '/': (context) => checkLogin(),
+        '/login': (context) => LoginScreen(),
+        // '/': (context) => LoginScreen(),
         '/main': (context) => MainScreen(),
         '/profile_screen': (context) => ProfileScreen(),
         '/update_profile': (context) => UpdateProfile(),

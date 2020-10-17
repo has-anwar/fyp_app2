@@ -6,8 +6,8 @@ import 'package:app2/utilities/constants.dart';
 import 'package:app2/utilities/my_drawer.dart';
 
 class ChildScreen extends StatefulWidget {
-  ChildScreen({this.childId});
-  final ChildData childId;
+  ChildScreen({this.childData});
+  final ChildData childData;
 
   @override
   _ChildScreenState createState() => _ChildScreenState();
@@ -22,58 +22,56 @@ class _ChildScreenState extends State<ChildScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
-        // elevation: 0,
-        title: Row(
-          children: [
-            SizedBox(
-              width: width * 0.27,
-            ),
-            Text(
-              'QR Code',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: kOrangeColor),
-            ),
-          ],
-        ),
+        elevation: 0,
         iconTheme: IconThemeData(color: kOrangeColor),
       ),
       drawer: MyDrawer(),
       body: Container(
         width: width,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               height: height * 0.1,
             ),
             Text(
               args.name,
-              style: TextStyle(fontSize: 40.0),
+              style: TextStyle(fontSize: 40.0, color: kOrangeColor),
             ),
+            Row(
+              children: [
+                Text(
+                  'Father ',
+                  style: TextStyle(fontSize: 20.0, color: kOrangeColor),
+                ),
+                Text(
+                  args.fatherName,
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ],
+            ),
+            Text(args.motherName),
             SizedBox(
               height: height * 0.05,
             ),
             QrImage(
-              data: args.id.toString(),
+              data: args.childId.toString(),
               version: QrVersions.auto,
-              size: 200.0,
+              size: 100.0,
             ),
-            Container(
-              width: width,
-              child: Center(
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        'QR code should read ${args.id}',
-                        style: TextStyle(fontSize: 12.0),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            Text(
+              'QR code should read',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            SizedBox(
+              height: height * 0.01,
+            ),
+            Text(
+              '${args.childId}',
+              style: TextStyle(fontSize: 20.0),
             ),
           ],
         ),

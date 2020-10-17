@@ -11,6 +11,7 @@ import 'package:app2/utilities/reusable_profile_text_field.dart';
 import 'package:app2/resources/bottom_button.dart';
 import 'package:app2/resources/profile_labels.dart';
 import 'package:http/http.dart' as http;
+import 'package:app2/resources/my_appbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   var name = 'loading...';
   var email = 'loading...';
-  int contactNumber = 0;
+  String contactNumber = 'loading...';
   var address = 'loading...';
   var cnic = 'loading...';
   bool isEnabled = false;
@@ -89,7 +90,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } else {
         map2['address'] = addressController.text;
       }
-
       var response = await http.put(kUrl + path2, body: map2);
       var userData = jsonDecode(response.body);
 
@@ -123,10 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final labelWidthFactor = 0.18;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kBackgroundColor,
-        elevation: 0,
-        iconTheme: IconThemeData(color: kOrangeColor),
+      appBar: MyAppBar(
+        title: 'Profile',
       ),
       drawer: MyDrawer(),
       body: GestureDetector(
@@ -142,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: height * 0.07,
+                    height: height * 0.06,
                   ),
                   Center(
                     child: Text(
@@ -167,13 +165,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             width: width * labelWidthFactor,
                           ),
-                          ProfileLabelText(label: 'Mobile Number'),
+                          ProfileLabelText(label: 'Mobile'),
                         ],
                       ),
                       SizedBox(
                         width: width * 0.8,
                         child: ReusableProfileTextField(
-                          hint: '$contactNumber',
+                          hint: contactNumber,
                           icon: Icon(Icons.phone_android),
                           myController: numberController,
                         ),
@@ -258,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.05,
+                    height: height * 0.01,
                   ),
                   ButtonTheme(
                     minWidth: 200.0,

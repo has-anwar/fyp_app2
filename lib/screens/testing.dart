@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:app2/utilities/constants.dart';
 import 'package:app2/utilities/prefs.dart';
 import 'package:app2/utilities/logo.dart';
+import 'package:app2/resources/children_data.dart';
 import 'package:app2/utilities/my_drawer.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -191,22 +192,4 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-}
-
-class ChildData {
-  String name;
-  int childId;
-  int age;
-  int parentId;
-  String fatherName;
-  String motherName;
-
-  ChildData({
-    @required this.name,
-    @required this.childId,
-    @required this.age,
-    @required this.parentId,
-    @required this.fatherName,
-    @required this.motherName,
-  });
 }

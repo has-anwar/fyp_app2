@@ -56,14 +56,14 @@ getStatus() async {
   return status;
 }
 
-setPhoneNumber(int number) async {
+setPhoneNumber(String number) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setInt('number', number);
+  preferences.setString('number', number);
 }
 
 getPhoneNumber() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  int phone = preferences.getInt('number');
+  String phone = preferences.getString('number');
   return phone;
 }
 
