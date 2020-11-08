@@ -28,20 +28,3 @@ void main() async {
   );
 }
 
-// class BMICalculator extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       routes: {
-//         '/': (context) => checkLogin(),
-//         '/login': (context) => LoginScreen(),
-//         // '/': (context) => LoginScreen(),
-//         '/main': (context) => MainScreen(),
-//         '/profile_screen': (context) => ProfileScreen(),
-//         '/update_profile': (context) => UpdateProfile(),
-//         '/change_password': (context) => UpdatePassword(),
-//         '/child_screen': (context) => ChildScreen(),
-//       },
-//     );
-//   }
-// }

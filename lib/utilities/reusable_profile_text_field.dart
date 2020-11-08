@@ -36,7 +36,7 @@ class _ReusableProfileTextFieldState extends State<ReusableProfileTextField> {
               prefixIcon: widget.icon,
               hintText: widget.hint,
               hintStyle: TextStyle(
-                fontSize: 18.0,
+                fontSize: SizeConfig.safeBlockHorizontal*4,
               ),
             ),
             autofocus: false,

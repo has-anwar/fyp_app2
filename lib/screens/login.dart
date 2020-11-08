@@ -142,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () async {
                       bool flag = checkEmpty();
                       if (flag) {
+                        print(flag);
                         login(context);
                       } else {
                         print('fields cannot be left empty');

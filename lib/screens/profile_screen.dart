@@ -117,6 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
@@ -146,11 +147,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Text(
                       '$name',
                       style: TextStyle(
-                          fontSize: 40.0, fontWeight: FontWeight.w800),
+                          fontSize: SizeConfig.safeBlockHorizontal*8, fontWeight: FontWeight.w800),
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.07,
+                    height: height * 0.04,
                   ),
                   Divider(),
                   Column(
@@ -172,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: width * 0.8,
                         child: ReusableProfileTextField(
                           hint: contactNumber,
-                          icon: Icon(Icons.phone_android),
+                          icon: Icon(Icons.phone_android, size: SizeConfig.safeBlockHorizontal*5,),
                           myController: numberController,
                         ),
                       ),
@@ -191,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: width * 0.8,
                         child: ReusableProfileTextField(
                           hint: '$email',
-                          icon: Icon(Icons.alternate_email),
+                          icon: Icon(Icons.alternate_email, size: SizeConfig.safeBlockHorizontal*5),
                           myController: emailController,
                         ),
                       ),
@@ -209,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: width * 0.8,
                         child: ReusableProfileTextField(
-                          icon: Icon(Icons.credit_card),
+                          icon: Icon(Icons.credit_card, size: SizeConfig.safeBlockHorizontal*5),
                           hint: '$cnic',
                           enabled: false,
                           myController: cnicController,
@@ -230,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: width * 0.8,
                         child: ReusableProfileTextField(
                           hint: '$address',
-                          icon: Icon(Icons.home),
+                          icon: Icon(Icons.home, size: SizeConfig.safeBlockHorizontal*5),
                           myController: addressController,
                         ),
                       ),
@@ -241,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   ButtonTheme(
                     minWidth: 200.0,
-                    height: 60.0,
+                    height: height*0.07,
                     child: RaisedButton(
                       padding: EdgeInsets.all(8.0),
                       color: kOrangeColor,
@@ -260,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   ButtonTheme(
                     minWidth: 200.0,
-                    height: 60.0,
+                    height: height*0.07,
                     child: RaisedButton(
                       padding: EdgeInsets.all(8.0),
                       color: Colors.red[900],

@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:app2/main.dart';
 import 'package:app2/resources/children_data.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:app2/utilities/constants.dart';
 import 'package:app2/utilities/my_drawer.dart';
+import 'package:app2/resources/my_appbar.dart';
+import 'package:app2/resources/child_info_card.dart';
+import 'package:http/http.dart' as http;
+
 
 class ChildScreen extends StatefulWidget {
   ChildScreen({this.childData});
@@ -14,68 +20,167 @@ class ChildScreen extends StatefulWidget {
 }
 
 class _ChildScreenState extends State<ChildScreen> {
+
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final ChildData args = ModalRoute.of(context).settings.arguments;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
+    Future <List<Record>> getRecords() async {
+      String path = '/vaccine_records/${args.childId}';
+
+      var response = await http.get(kUrl + path);
+
+      var data = jsonDecode(response.body);
+      print('data: $data');
+      List <Record> records = [];
+
+      for (var rec in data['Vaccine Records']) {
+        Record record = Record(rec['vaccine'], rec['doa'], rec['toa'], rec['tor']);
+        records.add(record);
+      }
+      for (var rec in records){
+        print(rec);
+      }
+      return records;
+    }
+
+    var _getRecords = getRecords();
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kBackgroundColor,
-        elevation: 0,
-        iconTheme: IconThemeData(color: kOrangeColor),
-      ),
+      appBar: MyAppBar(title: 'Child Menu'),
       drawer: MyDrawer(),
       body: Container(
         width: width,
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: height * 0.1,
-            ),
-            Text(
-              args.name,
-              style: TextStyle(fontSize: 40.0, color: kOrangeColor),
-            ),
-            Row(
-              children: [
-                Text(
-                  'Father ',
-                  style: TextStyle(fontSize: 20.0, color: kOrangeColor),
+        child: FutureBuilder(
+          future: getRecords(),
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            if (snapshot.data == null) {
+              return Container(
+                height: height * 0.7,
+                child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        children: [
+                          LinearProgressIndicator(
+                            valueColor:
+                            new AlwaysStoppedAnimation<Color>(kOrangeColor),
+                            backgroundColor: Colors.white,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Please Wait....",
+                            style: TextStyle(color: kOrangeColor),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                Text(
-                  args.fatherName,
-                  style: TextStyle(fontSize: 20.0),
+              );
+              } else {
+              print(snapshot.data.length);
+              return Container(
+                height: height,
+                child: Column (
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: childInfoCard(args),
+                    ),
+                    // Expanded(child: Text('History')),
+                    Expanded(
+                      flex: 4,
+                      child: ScrollConfiguration(
+                        behavior: ScrollBehavior(),
+                        child: GlowingOverscrollIndicator(
+                          axisDirection: AxisDirection.down,
+                          color: kOrangeColor,
+                          child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index){
+                              Record record = snapshot.data[index];
+                              return Padding(
+                                padding:
+                                  const EdgeInsets.only(left: 5.0, right: 5.0),
+                                child: Column(
+                                  children: [
+                                    // Text(record.name),
+                                    // Text(record.doa),
+                                    // Text(record.toa),
+                                    // Text(record.tor)
+                                    Card(
+                                      margin: EdgeInsets.fromLTRB(5, 10, 5, 4),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    record.name,
+                                                    maxLines: 3,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(fontSize: height*0.02, fontWeight: FontWeight.bold, color: kOrangeColor),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Divider(color: kOrangeColor,),
+                                            Text('Date of administration: ${record.doa}'),
+                                            Text('Time of administration: ${record.toa}'),
+                                            // Text('Re-administration date: ${record.tor??'unspecified'} ')
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Text(args.motherName),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            QrImage(
-              data: args.childId.toString(),
-              version: QrVersions.auto,
-              size: 100.0,
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            Text(
-              'QR code should read',
-              style: TextStyle(fontSize: 20.0),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Text(
-              '${args.childId}',
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ],
-        ),
+              );
+            }
+          }
+        )
       ),
     );
   }
+}
+
+class Record {
+  String name;
+  String doa;
+  String toa;
+  String tor;
+
+  Record(this.name, this.doa, this.toa, this.tor);
+
+  void printRecords(){
+    print(name);
+    print(doa);
+    print(toa);
+    print(tor);
+  }
+
 }

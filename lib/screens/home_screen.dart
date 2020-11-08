@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:app2/utilities/loading_dialog.dart';
-
+import 'package:app2/resources/qr_popup.dart';
 import 'package:app2/resources/my_appbar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -70,6 +70,9 @@ class _MainScreenState extends State<MainScreen> {
           motherName: jsonData2['mother']);
       childList.add(childData);
     }
+    // for(var child in childList){
+    //   print(child.name);
+    // }
     return childList;
   }
 
@@ -112,7 +115,6 @@ class _MainScreenState extends State<MainScreen> {
                               fontFamily: 'Cormorant_Garamond',
                             ),
                           ),
-                          Icon(Icons.search),
                         ],
                       ),
                     ),
@@ -172,7 +174,6 @@ class _MainScreenState extends State<MainScreen> {
     return Container(
       child: GestureDetector(
         onTap: () async {
-          Dialogs.showLoadingDialog(context, _keyLoader);
           http.Response response = await http.put(
             kUrl + '/child_token',
             headers: <String, String>{
@@ -182,48 +183,9 @@ class _MainScreenState extends State<MainScreen> {
               <String, String>{"id": "${data[index].childId}"},
             ),
           );
-          // if (response.statusCode == 200) {
-          Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
-          // }
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text("${data[index].name}"),
-                content: SizedBox(
-                  width: width * 0.5,
-                  height: height * 0.2,
-                  // width: width * 0.5,
-                  // height: height * 0.5,
-                  child: Center(
-                    child: Card(
-                      child: QrImage(
-                        data:
-                            'onlinevrs ${jsonDecode(response.body)["Token"]} onlinevrs',
-                        version: QrVersions.auto,
-                        size: 200,
-                      ),
-                    ),
-                  ),
-                ),
-                actions: <Widget>[
-                  MaterialButton(
-                      elevation: 5.0,
-                      child: Text(
-                        "Dismiss",
-                        style: TextStyle(color: kOrangeColor),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      })
-                ],
-                elevation: 24.0,
-                // backgroundColor: kOrangeColor,
-              );
-            },
-            barrierDismissible: false,
-          );
-          // Navigator.pushNamed(context, '/child_screen', arguments: data[index]);
+
+          Navigator.pushNamed(context, '/child_screen', arguments: data[index]);
+
         },
         child: Card(
           margin: EdgeInsets.fromLTRB(5, 10, 5, 4),
