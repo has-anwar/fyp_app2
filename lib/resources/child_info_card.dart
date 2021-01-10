@@ -6,8 +6,7 @@ Card childInfoCard(args) {
   Color cardColor = Color(0xFFFE5E5E5);
   return Card(
     color: cardColor,
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     margin: EdgeInsets.all(20.0),
     elevation: 7.0,
     child: Column(
@@ -27,11 +26,8 @@ Card childInfoCard(args) {
           color: Color(0xFFFBDBDBD),
         ),
         Padding(
-          padding: EdgeInsets.only(
-              left: 25.0,
-              top: 0.0,
-              right: 25.0,
-              bottom: 10.0),
+          padding:
+              EdgeInsets.only(left: 25.0, top: 0.0, right: 25.0, bottom: 10.0),
           child: Row(
             children: [
               Text(
@@ -45,11 +41,8 @@ Card childInfoCard(args) {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(
-              left: 25.0,
-              top: 0.0,
-              right: 25.0,
-              bottom: 10.0),
+          padding:
+              EdgeInsets.only(left: 25.0, top: 0.0, right: 25.0, bottom: 10.0),
           child: Row(
             children: [
               Text(
@@ -62,24 +55,24 @@ Card childInfoCard(args) {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-              left: 25.0,
-              top: 0.0,
-              right: 25.0,
-              bottom: 10.0),
-          child: Row(
-            children: [
-              Text(
-                'Age: ${args.age}',
-                style: TextStyle(
-                  fontSize: _fontSize,
-                  color: textColor,
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.only(
+        //       left: 25.0,
+        //       top: 0.0,
+        //       right: 25.0,
+        //       bottom: 10.0),
+        //   child: Row(
+        //     children: [
+        //       Text(
+        //         'Age: ${args.age}',
+        //         style: TextStyle(
+        //           fontSize: _fontSize,
+        //           color: textColor,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ],
     ),
   );

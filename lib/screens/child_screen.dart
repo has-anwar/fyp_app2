@@ -124,7 +124,7 @@ class _ChildScreenState extends State<ChildScreen> {
                         ),
                         // Expanded(child: Text('History')),
                         Expanded(
-                          flex: 4,
+                          flex: 5,
                           child: ScrollConfiguration(
                             behavior: ScrollBehavior(),
                             child: GlowingOverscrollIndicator(
