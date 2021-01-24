@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
       ChildData childData = ChildData(
           name: c['name'],
           childId: c['child_id'],
-          age: c['age'],
+          dob: c['age'],
           parentId: c['parent_id'],
           fatherName: jsonData2['father_name'],
           motherName: jsonData2['mother_name']);

@@ -64,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
       ChildData childData = ChildData(
           name: c['name'],
           childId: c['child_id'],
-          age: c['age'],
+          dob: c['dob'],
           parentId: c['parent_id'],
           fatherName: jsonData2['father'],
           motherName: jsonData2['mother']);
@@ -172,6 +172,7 @@ class _MainScreenState extends State<MainScreen> {
     final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
     return Container(
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 16),
       child: GestureDetector(
         onTap: () async {
           http.Response response = await http.put(
@@ -185,10 +186,20 @@ class _MainScreenState extends State<MainScreen> {
           );
 
           Navigator.pushNamed(context, '/child_screen', arguments: data[index]);
-
         },
         child: Card(
-          margin: EdgeInsets.fromLTRB(5, 10, 5, 4),
+          // color: Color.fromARGB(255, 10, 17, 40),
+          color: Color.fromARGB(255, 224, 221, 207),
+
+          // margin: EdgeInsets.fromLTRB(5, 10, 5, 4),
+          elevation: 5.0,
+          margin: EdgeInsets.only(left: 6.0, right: 6.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+
+          // margin: EdgeInsets.fromLTRB(5, 10, 5, 4),
+
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Column(
@@ -202,7 +213,8 @@ class _MainScreenState extends State<MainScreen> {
                           data[index].name,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 20.0),
+                          style:
+                              kChildDetailCardTextStyle.copyWith(fontSize: 20),
                         ),
                       ),
                       Spacer(),

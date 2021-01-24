@@ -10,7 +10,7 @@ const kBottomContainerHeight = 60.0;
 const kLabelFontSize = 40.0;
 
 var url1 = 'http://10.0.2.2:5000/employee/1';
-var kUrl = 'http://192.168.1.2:5000';
+var kUrl = 'http://192.168.1.3:5000';
 var url3 = 'http://0.0.0.0:5000/employee/1';
 // var kUrl = 'http://192.168.100.52:5000';
 
@@ -24,6 +24,12 @@ const kLogoStyleTwo = TextStyle(
   color: kOrangeColor,
   fontSize: 40,
   fontWeight: FontWeight.w800,
+);
+
+const kChildDetailCardTextStyle = TextStyle(
+  color: Color.fromARGB(255, 8, 103, 136),
+  fontSize: 13.0,
+  letterSpacing: 0.6,
 );
 
 class SizeConfig {

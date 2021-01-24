@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ChildData {
   String name;
   int childId;
-  int age;
+  String dob;
   int parentId;
   String fatherName;
   String motherName;
@@ -11,7 +11,7 @@ class ChildData {
   ChildData({
     @required this.name,
     @required this.childId,
-    @required this.age,
+    @required this.dob,
     @required this.parentId,
     @required this.fatherName,
     @required this.motherName,
