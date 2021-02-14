@@ -5,7 +5,7 @@ import 'screens/home_screen.dart';
 
 Widget checkLogin() {
   if (getParentID() != null) {
-    return MainScreen();
+    return HomeScreen();
   } else {
     return LoginScreen();
   }

@@ -90,6 +90,7 @@ class _ChildScreenState extends State<ChildScreen> {
               'id': args.childId,
             }),
           );
+          log(response.body);
           var data = jsonDecode(response.body);
           log(data["Token"]);
           String token = data["Token"];
@@ -132,6 +133,7 @@ class _ChildScreenState extends State<ChildScreen> {
                   // print(snapshot.data.length);
                   return Container(
                     height: height,
+                    width: width,
                     child: Column(
                       children: [
                         Expanded(
@@ -142,7 +144,7 @@ class _ChildScreenState extends State<ChildScreen> {
                         _isGettingRecords
                             ? CircularProgressIndicator()
                             : Expanded(
-                                flex: 5,
+                                flex: 4,
                                 child: ScrollConfiguration(
                                   behavior: ScrollBehavior(),
                                   child: GlowingOverscrollIndicator(
@@ -153,7 +155,18 @@ class _ChildScreenState extends State<ChildScreen> {
                                       itemCount: snapshot.data.length,
                                       itemBuilder: (context, index) {
                                         Record record = snapshot.data[index];
-                                        return ChildDetailCard(record: record);
+                                        if (index == snapshot.data.length - 1) {
+                                          return Column(
+                                            children: [
+                                              ChildDetailCard(record: record),
+                                              SizedBox(
+                                                height: 100.0,
+                                              ),
+                                            ],
+                                          );
+                                        } else
+                                          return ChildDetailCard(
+                                              record: record);
                                       },
                                     ),
                                   ),
@@ -216,7 +229,7 @@ class ChildDetailCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Administration Date:   ',
+                          '\tAdministration Date:   ',
                           style: kChildDetailCardTextStyle,
                         ),
                         Text(
@@ -236,7 +249,7 @@ class ChildDetailCard extends StatelessWidget {
                         ? Row(
                             children: [
                               Text(
-                                'Re-administration Date:    ',
+                                '\tRe-administration Date:    ',
                                 style: kChildDetailCardTextStyle.copyWith(
                                     letterSpacing: 0.0),
                               ),

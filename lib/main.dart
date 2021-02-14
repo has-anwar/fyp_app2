@@ -1,4 +1,6 @@
 import 'package:app2/screens/password_screen.dart';
+import 'package:app2/screens/splash_screen.dart';
+import 'package:app2/utilities/constants.dart';
 import 'package:app2/utilities/prefs.dart';
 import 'package:flutter/material.dart';
 import 'screens/login.dart';
@@ -15,10 +17,12 @@ void main() async {
   var id = preferences.getInt('parent_id');
   runApp(
     MaterialApp(
-      home: id == null ? LoginScreen() : MainScreen(),
+      theme: ThemeData(primaryColor: kOrangeColor, cursorColor: kOrangeColor),
+      home: id == null ? LoginScreen() : HomeScreen(),
       routes: {
         '/login': (context) => LoginScreen(),
-        '/main': (context) => MainScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
+        SplashScreen.id: (context) => SplashScreen(),
         '/profile_screen': (context) => ProfileScreen(),
         '/update_profile': (context) => UpdateProfile(),
         '/change_password': (context) => UpdatePassword(),
@@ -27,4 +31,3 @@ void main() async {
     ),
   );
 }
-

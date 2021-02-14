@@ -72,7 +72,6 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ListTile(
                 title: Row(
@@ -100,7 +99,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 },
               ),
               SizedBox(
-                height: height * 0.6,
+                height: height / 2,
               ),
               ListTile(
                 title: Row(

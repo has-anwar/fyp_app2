@@ -50,7 +50,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void updateInfo() async {
+  Future<bool> updateInfo() async {
+    bool _isUpdated = false;
     var _email = await getEmail();
     Map<String, String> map = {'password': 'null', 'email': 'null'};
 
@@ -61,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       var response = await http.put(kUrl + path, body: map);
       var userEmail = jsonDecode(response.body);
       email = await userEmail['email'];
-
+      _isUpdated = true;
       setState(() {
         setEmail(userEmail['email']);
         emailController.clear();
@@ -83,11 +84,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (numberController.text.isEmpty) {
         map2['mobile'] = "null";
       } else {
+        _isUpdated = true;
         map2['mobile'] = numberController.text;
       }
       if (addressController.text.isEmpty) {
         map2['address'] = "null";
       } else {
+        _isUpdated = true;
         map2['address'] = addressController.text;
       }
       var response = await http.put(kUrl + path2, body: map2);
@@ -102,6 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         addressController.clear();
       });
     }
+    return _isUpdated;
   }
 
   @override
@@ -122,6 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final double width = MediaQuery.of(context).size.width;
 
     final labelWidthFactor = 0.18;
+    final ScrollController _scrollController = ScrollController();
 
     return Scaffold(
       appBar: MyAppBar(
@@ -133,7 +138,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
+          // controller: _scrollController,
+
+          // physics: NeverScrollableScrollPhysics(),
           child: SafeArea(
             child: Container(
               height: height,
@@ -141,17 +148,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: height * 0.06,
+                    height: height * 0.03,
                   ),
                   Center(
                     child: Text(
                       '$name',
                       style: TextStyle(
-                          fontSize: SizeConfig.safeBlockHorizontal*8, fontWeight: FontWeight.w800),
+                          fontSize: SizeConfig.safeBlockHorizontal * 8,
+                          fontWeight: FontWeight.w800),
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.04,
+                    height: height * 0.03,
                   ),
                   Divider(),
                   Column(
@@ -159,109 +167,152 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: height * 0.04,
+                        height: height * 0.03,
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: width * labelWidthFactor,
-                          ),
-                          ProfileLabelText(label: 'Mobile'),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     SizedBox(
+                      //       width: width * labelWidthFactor,
+                      //     ),
+                      //     ProfileLabelText(label: 'Mobile'),
+                      //   ],
+                      // ),
                       SizedBox(
                         width: width * 0.8,
                         child: ReusableProfileTextField(
                           hint: contactNumber,
-                          icon: Icon(Icons.phone_android, size: SizeConfig.safeBlockHorizontal*5,),
+                          icon: Icon(
+                            Icons.phone_android,
+                            size: SizeConfig.safeBlockHorizontal * 5,
+                          ),
                           myController: numberController,
                         ),
                       ),
                       SizedBox(
                         height: height * 0.03,
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: width * 0.18,
-                          ),
-                          ProfileLabelText(label: 'E-Mail'),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     SizedBox(
+                      //       width: width * 0.18,
+                      //     ),
+                      //     ProfileLabelText(label: 'E-Mail'),
+                      //   ],
+                      // ),
                       SizedBox(
                         width: width * 0.8,
                         child: ReusableProfileTextField(
                           hint: '$email',
-                          icon: Icon(Icons.alternate_email, size: SizeConfig.safeBlockHorizontal*5),
+                          icon: Icon(Icons.alternate_email,
+                              size: SizeConfig.safeBlockHorizontal * 5),
                           myController: emailController,
                         ),
                       ),
                       SizedBox(
                         height: height * 0.03,
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: width * 0.18,
-                          ),
-                          ProfileLabelText(label: 'CNIC'),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     SizedBox(
+                      //       width: width * 0.18,
+                      //     ),
+                      //     ProfileLabelText(label: 'CNIC'),
+                      //   ],
+                      // ),
                       SizedBox(
                         width: width * 0.8,
                         child: ReusableProfileTextField(
-                          icon: Icon(Icons.credit_card, size: SizeConfig.safeBlockHorizontal*5),
+                          icon: Icon(Icons.credit_card,
+                              size: SizeConfig.safeBlockHorizontal * 5),
                           hint: '$cnic',
                           enabled: false,
                           myController: cnicController,
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.04,
+                        height: height * 0.03,
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: width * 0.18,
-                          ),
-                          ProfileLabelText(label: 'Home Address'),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     SizedBox(
+                      //       width: width * 0.18,
+                      //     ),
+                      //     ProfileLabelText(label: 'Home Address'),
+                      //   ],
+                      // ),
                       SizedBox(
                         width: width * 0.8,
                         child: ReusableProfileTextField(
                           hint: '$address',
-                          icon: Icon(Icons.home, size: SizeConfig.safeBlockHorizontal*5),
+                          icon: Icon(Icons.home,
+                              size: SizeConfig.safeBlockHorizontal * 5),
                           myController: addressController,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: height * 0.05,
+                    height: height * 0.04,
                   ),
-                  ButtonTheme(
-                    minWidth: 200.0,
-                    height: height*0.07,
-                    child: RaisedButton(
-                      padding: EdgeInsets.all(8.0),
-                      color: kOrangeColor,
-                      textColor: Colors.white,
-                      child: Text('Update Profile'),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0)),
-                      onPressed: () {
-                        updateInfo();
-                        // Navigator.pushNamed(context, '/update_profile');
-                      },
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    return ButtonTheme(
+                      minWidth: 200.0,
+                      height: height * 0.07,
+                      child: RaisedButton(
+                        padding: EdgeInsets.all(8.0),
+                        color: kOrangeColor,
+                        textColor: Colors.white,
+                        child: Text('Update Profile'),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0)),
+                        onPressed: () async {
+                          bool isUpdated = await updateInfo();
+                          if (isUpdated) {
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline_outlined,
+                                      color: Colors.yellow,
+                                    ),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text('Credentials have been updated')
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline_outlined,
+                                      color: Colors.yellow,
+                                    ),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text('No credentials edited to update')
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          // Navigator.pushNamed(context, '/update_profile');
+                        },
+                      ),
+                    );
+                  }),
                   SizedBox(
                     height: height * 0.01,
                   ),
                   ButtonTheme(
                     minWidth: 200.0,
-                    height: height*0.07,
+                    height: height * 0.07,
                     child: RaisedButton(
                       padding: EdgeInsets.all(8.0),
                       color: Colors.red[900],

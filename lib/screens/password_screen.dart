@@ -43,24 +43,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     backgroundColor = errorColor;
   }
 
-  String errorMessage = 'Error Message';
-  void displayUpdated() {
-    iconData = Icons.check_circle;
-    backgroundColor = Colors.green[900];
-  }
+  void updatedSuccessfully() {}
 
-  void updatedSuccessfully() {
-    errorMessage = 'Password updated successfully';
-    displayUpdated();
-  }
+  void wrongCurrentPassword() {}
 
-  void wrongCurrentPassword() {
-    errorMessage = 'Incorrect Current Password';
-  }
-
-  void incorrectNewAndConfirmPasswords() {
-    errorMessage = 'New and Confirm passwords do not match';
-  }
+  void incorrectNewAndConfirmPasswords() {}
 
   void getFlags() {
     if (currentPasswordController.text.isEmpty) {
@@ -96,7 +83,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     return response;
   }
 
-  void updatePassword() async {
+  void updatePassword(context) async {
     getFlags();
     if (currentFlag && newFlag && confirmFlag) {
       if (confirmPasswordController.text == newPasswordController.text) {
@@ -104,42 +91,114 @@ class _UpdatePasswordState extends State<UpdatePassword> {
         print(response);
         var userInfo = jsonDecode(response.body);
         if (userInfo['flag'] == true) {
-          setState(() {
-            updatedSuccessfully();
-          });
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.error_outline_outlined,
+                  color: Colors.yellow,
+                ),
+                SizedBox(
+                  width: 8.0,
+                ),
+                Text('Password updated successfully!')
+              ],
+            ),
+          ));
         } else {
           print(userInfo);
-
-          setState(() {
-            wrongCurrentPassword();
-            displayError();
-          });
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  Icons.error_outline_outlined,
+                  color: Colors.yellow,
+                ),
+                SizedBox(
+                  width: 8.0,
+                ),
+                Text('Incorrect password entered')
+              ],
+            ),
+          ));
         }
       } else {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.error_outline_outlined,
+                color: Colors.yellow,
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text('Passwords do not match')
+            ],
+          ),
+        ));
         print('ERROR: WRONG NEW AND CONFIRM PASSWORD');
-        setState(() {
-          incorrectNewAndConfirmPasswords();
-          displayError();
-        });
       }
     } else {
       if (!currentFlag) {
-        setState(() {
-          isEmpty();
-          displayError();
-        });
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.error_outline_outlined,
+                color: Colors.yellow,
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text('Current password cannot be left empty')
+            ],
+          ),
+        ));
+        // setState(() {
+        //   isEmpty();
+        //   displayError();
+        // });
       }
       if (!newFlag) {
-        setState(() {
-          isEmpty();
-          displayError();
-        });
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.error_outline_outlined,
+                color: Colors.yellow,
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text('Please enter a new password')
+            ],
+          ),
+        ));
+        // setState(() {
+        //   isEmpty();
+        //   displayError();
+        // });
       }
       if (!confirmFlag) {
-        setState(() {
-          isEmpty();
-          displayError();
-        });
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.error_outline_outlined,
+                color: Colors.yellow,
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text('Please confirm new password')
+            ],
+          ),
+        ));
+        // setState(() {
+        //   isEmpty();
+        //   displayError();
+        // });
       }
       setState(() {
         currentFlag = true;
@@ -158,18 +217,10 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     confirmPasswordController.clear();
   }
 
-  // void passwordLength() {
-  //   errorMessage = 'New password cannot be less than eight characters';
-  // }
-
   void resetErrors() {
     setState(() {
       backgroundColor = kBackgroundColor;
     });
-  }
-
-  void isEmpty() {
-    errorMessage = 'Password fields cannot be left empty';
   }
 
   @override
@@ -179,90 +230,87 @@ class _UpdatePasswordState extends State<UpdatePassword> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kBackgroundColor,
+        title: Text('Profile'),
+        backgroundColor: kOrangeColor,
         elevation: 0,
-        iconTheme: IconThemeData(color: kOrangeColor),
+        centerTitle: true,
       ),
       drawer: MyDrawer(),
-      body: GestureDetector(
-        onTap: () {
-          resetErrors();
-        },
-        child: Container(
-          height: height * 0.95,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: height * 0.1,
+      body: Container(
+        height: height * 0.95,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: height * 0.05,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: Text(
+                  'Enter credentials',
+                  style: TextStyle(fontSize: 22),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      iconData,
-                      color: backgroundColor,
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              ProfileLabelText(label: 'Current Password'),
+              ReusableTextField(
+                hint: 'Enter current password',
+                myController: currentPasswordController,
+                obscureText: true,
+                icon: Icon(
+                  Icons.vpn_key,
+                ),
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              ProfileLabelText(label: 'Enter new Password'),
+              ReusableTextField(
+                hint: 'Enter new password',
+                myController: newPasswordController,
+                obscureText: true,
+                icon: Icon(
+                  Icons.vpn_key,
+                ),
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              ProfileLabelText(label: 'Confirm new Password'),
+              ReusableTextField(
+                hint: 'Confirm new password',
+                myController: confirmPasswordController,
+                obscureText: true,
+                icon: Icon(
+                  Icons.vpn_key,
+                ),
+              ),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              Builder(
+                builder: (context) {
+                  return ButtonTheme(
+                    minWidth: 200.0,
+                    height: 60.0,
+                    child: RaisedButton(
+                      padding: EdgeInsets.all(8.0),
+                      color: Colors.red[900],
+                      textColor: Colors.white,
+                      child: Text('Update Password'),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0)),
+                      onPressed: () {
+                        updatePassword(context);
+                      },
                     ),
-                    SizedBox(width: width * 0.04),
-                    Text(
-                      errorMessage,
-                      style: TextStyle(color: backgroundColor, fontSize: 20.0),
-                    ),
-                  ],
-                ),
-                ProfileLabelText(label: 'Current Password'),
-                ReusableTextField(
-                  hint: 'Enter current password',
-                  myController: currentPasswordController,
-                  obscureText: true,
-                  icon: Icon(
-                    Icons.vpn_key,
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.05,
-                ),
-                ProfileLabelText(label: 'Enter new Password'),
-                ReusableTextField(
-                  hint: 'Enter new password',
-                  myController: newPasswordController,
-                  obscureText: true,
-                  icon: Icon(
-                    Icons.vpn_key,
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.05,
-                ),
-                ProfileLabelText(label: 'Confirm new Password'),
-                ReusableTextField(
-                  hint: 'Confirm new password',
-                  myController: confirmPasswordController,
-                  obscureText: true,
-                  icon: Icon(
-                    Icons.vpn_key,
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.1,
-                ),
-                ButtonTheme(
-                  minWidth: 200.0,
-                  height: 60.0,
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(8.0),
-                    color: Colors.red[900],
-                    textColor: Colors.white,
-                    child: Text('Update Password'),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)),
-                    onPressed: () {
-                      updatePassword();
-                    },
-                  ),
-                )
-              ],
-            ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

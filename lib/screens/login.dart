@@ -1,3 +1,4 @@
+import 'package:app2/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app2/utilities/constants.dart';
 import 'package:app2/utilities/reusable_card.dart';
@@ -19,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final usernameSnackBar = SnackBar(
       content: Text(
-    'Incorrect email or password',
+    'Incorrect login credentials',
     style: TextStyle(
       fontSize: 20.0,
     ),
@@ -33,8 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  String errorMessage = '';
+
   void login(context) async {
-    String username = textController.text;
+    String username = textController.text.trim();
     String password = passwordController.text;
     String path = '/parent_account/$username';
     var response = await http.post(
@@ -63,20 +66,25 @@ class _LoginScreenState extends State<LoginScreen> {
       setPhoneNumber(phone);
       setAddress(address);
 
-      Navigator.popAndPushNamed(context, '/main');
+      Navigator.pushReplacementNamed(context, SplashScreen.id);
     } else {
-      Scaffold.of(context).showSnackBar(usernameSnackBar);
-      setState(() {
-        displayErrorLogin();
-      });
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                Icons.error_outline_outlined,
+                color: Colors.yellow,
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text('Incorrect login credentials entered'),
+            ],
+          ),
+        ),
+      );
     }
-  }
-
-  final Color errorColor = Colors.red[900];
-  Color backgroundColor = kBackgroundColor;
-
-  void displayErrorLogin() {
-    backgroundColor = errorColor;
   }
 
   @override
@@ -98,23 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(height: height * 0.2),
                 Center(
-                  child: Logo(),
+                  child: Hero(tag: 'tag1', child: Logo()),
                 ),
                 SizedBox(height: height * 0.1),
-                Row(
-                  children: [
-                    SizedBox(width: width * 0.2),
-                    Icon(
-                      Icons.cancel,
-                      color: backgroundColor,
-                    ),
-                    SizedBox(width: width * 0.04),
-                    Text(
-                      'Incorrect email or password',
-                      style: TextStyle(color: backgroundColor, fontSize: 20.0),
-                    ),
-                  ],
-                ),
                 SizedBox(height: height * 0.02),
                 ReusableCard(
                   cardChild: ReusableTextField(
@@ -141,11 +135,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     buttonTitle: 'Log In',
                     onTap: () async {
                       bool flag = checkEmpty();
+                      print(flag);
                       if (flag) {
-                        print(flag);
                         login(context);
                       } else {
-                        print('fields cannot be left empty');
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              children: [
+                                Icon(
+                                  Icons.error_outline_outlined,
+                                  color: Colors.yellow,
+                                ),
+                                SizedBox(
+                                  width: 8.0,
+                                ),
+                                Text('Please enter login credentials'),
+                              ],
+                            ),
+                          ),
+                        );
                       }
                     },
                   ),

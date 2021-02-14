@@ -17,8 +17,8 @@ displayQR(context, name, token) {
       return AlertDialog(
         title: Text(name),
         content: SizedBox(
-          width: width * 0.5,
-          height: height * 0.2,
+          width: 200,
+          height: 200,
           // width: width * 0.5,
           // height: height * 0.5,
           child: Center(

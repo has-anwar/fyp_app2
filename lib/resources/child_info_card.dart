@@ -8,12 +8,12 @@ Card childInfoCard(ChildData args) {
     DateTime dob = DateTime.parse(childData.dob);
     int ageInHours = now.difference(dob).inHours;
     if (ageInHours < 17520)
-      return '${((ageInHours / 730)).floor()} Months';
+      return '${((ageInHours / 730)).floor()} months';
     else
-      return '${((ageInHours / 730) / 12).floor()} Years';
+      return '${((ageInHours / 730) / 12).floor()} years';
   }
 
-  double _fontSize = 20.0;
+  double _fontSize = 16.0;
   Color textColor = Color(0xFFF212121);
   Color cardColor = Color(0xFFFE5E5E5);
   return Card(
@@ -21,12 +21,12 @@ Card childInfoCard(ChildData args) {
     color: Color.fromARGB(255, 224, 221, 207),
 
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-    margin: EdgeInsets.all(20.0),
+    margin: EdgeInsets.all(15.0),
     elevation: 7.0,
     child: Column(
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
+          padding: EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 0.0),
           child: Text(
             '${args.name}',
             style: TextStyle(
@@ -41,7 +41,7 @@ Card childInfoCard(ChildData args) {
         ),
         Padding(
           padding:
-              EdgeInsets.only(left: 25.0, top: 0.0, right: 25.0, bottom: 10.0),
+              EdgeInsets.only(left: 8.0, top: 0.0, right: 0.0, bottom: 10.0),
           child: Row(
             children: [
               Text(
@@ -56,7 +56,7 @@ Card childInfoCard(ChildData args) {
         ),
         Padding(
           padding:
-              EdgeInsets.only(left: 25.0, top: 0.0, right: 25.0, bottom: 10.0),
+              EdgeInsets.only(left: 8.0, top: 0.0, right: 0.0, bottom: 10.0),
           child: Row(
             children: [
               Text(
@@ -71,11 +71,11 @@ Card childInfoCard(ChildData args) {
         ),
         Padding(
           padding:
-              EdgeInsets.only(left: 25.0, top: 0.0, right: 25.0, bottom: 10.0),
+              EdgeInsets.only(left: 8.0, top: 0.0, right: 0.0, bottom: 0.0),
           child: Row(
             children: [
               Text(
-                '${args.name}\'s age: ${getAge(args)}',
+                'age: ${getAge(args)}',
                 style: TextStyle(
                     fontSize: _fontSize,
                     color: Color.fromARGB(255, 8, 103, 136),

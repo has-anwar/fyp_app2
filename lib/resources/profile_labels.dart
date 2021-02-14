@@ -8,7 +8,8 @@ class ProfileLabelText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: TextStyle(fontSize: SizeConfig.safeBlockHorizontal*5, color: kOrangeColor),
+      style: TextStyle(
+          fontSize: SizeConfig.safeBlockHorizontal * 4, color: kOrangeColor),
     );
   }
 }

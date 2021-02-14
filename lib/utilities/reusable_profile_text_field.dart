@@ -33,10 +33,11 @@ class _ReusableProfileTextFieldState extends State<ReusableProfileTextField> {
             cursorColor: kOrangeColor,
             controller: widget.myController,
             decoration: InputDecoration(
+              border: OutlineInputBorder(),
               prefixIcon: widget.icon,
               hintText: widget.hint,
               hintStyle: TextStyle(
-                fontSize: SizeConfig.safeBlockHorizontal*4,
+                fontSize: SizeConfig.safeBlockHorizontal * 4,
               ),
             ),
             autofocus: false,

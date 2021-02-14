@@ -13,12 +13,14 @@ import 'package:app2/utilities/loading_dialog.dart';
 import 'package:app2/resources/qr_popup.dart';
 import 'package:app2/resources/my_appbar.dart';
 
-class MainScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
+  static final String id = 'home_screen';
+
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   var childList = [];
   String fatherName;
   String motherName;
@@ -46,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   getChildrenInfo() async {
     var children = await getChildren();
     var temp = jsonDecode(children)['Children'];
-    // print('this shit $temp');
+    print('this shit $temp');
     return temp;
   }
 
@@ -79,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     initializeData();
-    getChildrenInfo();
+    // getChildrenInfo();
     super.initState();
   }
 
@@ -150,7 +152,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           );
-        } else {
+        } else if (snapshot.hasData) {
           return Container(
             height: height * 0.9,
             child: ListView.builder(
@@ -159,6 +161,10 @@ class _MainScreenState extends State<MainScreen> {
               itemBuilder: (BuildContext context, int index) =>
                   buildChildrenCard2(context, index, snapshot.data),
             ),
+          );
+        } else {
+          return Center(
+            child: Text('LOADING'),
           );
         }
       },
@@ -201,7 +207,8 @@ class _MainScreenState extends State<MainScreen> {
           // margin: EdgeInsets.fromLTRB(5, 10, 5, 4),
 
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
             child: Column(
               children: [
                 Padding(
@@ -211,10 +218,10 @@ class _MainScreenState extends State<MainScreen> {
                       Expanded(
                         child: Text(
                           data[index].name,
-                          maxLines: 3,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style:
-                              kChildDetailCardTextStyle.copyWith(fontSize: 20),
+                              kChildDetailCardTextStyle.copyWith(fontSize: 17),
                         ),
                       ),
                       Spacer(),
